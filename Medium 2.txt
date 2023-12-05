@@ -1,0 +1,45 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class MajorityElement {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the elements of the array (comma-separated): ");
+        String input = scanner.nextLine();
+        String[] numStrings = input.split(",");
+        
+        int[] nums = new int[numStrings.length];
+        for (int i = 0; i < numStrings.length; i++) {
+            nums[i] = Integer.parseInt(numStrings[i]);
+        }
+
+        int[] majorityElements = findMajorityElement(nums);
+
+        System.out.print("Majority Element(s): ");
+        for (int element : majorityElements) {
+            System.out.print(element + " ");
+        }
+
+
+        scanner.close();
+    }
+
+    private static int[] findMajorityElement(int[] nums) {
+        Map<Integer, Integer> countMap = new HashMap<>();
+
+        for (int num : nums) {
+            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+        }
+
+        int threshold = nums.length / 3;
+        int[] result = countMap.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() > threshold)
+                .mapToInt(Map.Entry::getKey)
+                .toArray();
+
+        return result;
+    }
+}
